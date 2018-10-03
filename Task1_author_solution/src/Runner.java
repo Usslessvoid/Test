@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 import by.training.task1.Operator;
 
-public class Main {
+public class Runner {
 	static final String NUMBERS = "1234567890.";
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
