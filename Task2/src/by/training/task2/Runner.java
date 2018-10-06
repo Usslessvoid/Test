@@ -1,40 +1,28 @@
 package by.training.task2;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Runner {
-	static final int PORT = 2080;
+	public static final int PORT = 2080;
+	static List<ServerThread> threads;
+	
 	public static void main(String[] args) {
 		ServerSocket socket = null;
-		Socket client;
-		BufferedReader input = null;
-		PrintWriter output = null;
 		try {
 			socket = new ServerSocket(PORT);
+			threads = new ArrayList<>();
 			System.out.println("Socket create successful!");
-			client = socket.accept();
-			System.out.println("Successful connection! "+client.getInetAddress().toString());
-			input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			output = new PrintWriter(client.getOutputStream(),true);
+			addServerThread(socket);
 		}catch (IOException e) {
-			System.err.println("Can't create connection ");
+			System.err.println("Can't create socket ");
 		}
-		output.println("Hello,niga");
-		try {
-			if(input != null) {
-				input.close();
-			}
-			if(output != null) {
-				output.close();
-			}
-		}catch (IOException e) {
-			System.err.println("Streams not closed");
-		}
+	}
+	public static void addServerThread(ServerSocket s){
+		threads.add(new ServerThread(s));
+		threads.get(threads.size()-1).start();
 	}
 
 }
